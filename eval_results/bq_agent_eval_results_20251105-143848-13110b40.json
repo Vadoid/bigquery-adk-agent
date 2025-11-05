@@ -1,0 +1,316 @@
+{
+    "summary_metrics": {
+        "row_count": 9,
+        "factual_accuracy_metric/mean": 2.5555555555555554,
+        "factual_accuracy_metric/std": 1.9436506316151,
+        "completeness_metric/mean": 3.4444444444444446,
+        "completeness_metric/std": 1.9436506316151,
+        "trajectory_single_tool_use/mean": 1.0,
+        "trajectory_single_tool_use/std": 0.0,
+        "latency_in_seconds/mean": 16.14058158777779,
+        "latency_in_seconds/std": 6.220273814622042,
+        "failure/mean": 0.0,
+        "failure/std": 0.0
+    },
+    "pointwise_metrics": [
+        {
+            "prompt": "What tables are available in the dataset `icecream_lab`?",
+            "reference": "The tables available in the dataset `icecream_lab` are: `CustomerCases, `MaterialMasterData`, `actuals_vs_forecast`, `fda_icecream_enforcements`, `icecream_sales`.",
+            "response": "The tables available in the `icecream_lab` dataset are: `CustomerCases`, `MaterialMasterData`, `actuals_vs_forecast`, `fda_ice_cream_enforcements`, `icecream_sales`, and `sales_data_v1`.",
+            "latency_in_seconds": 7.739082246998805,
+            "failure": 0,
+            "predicted_trajectory": [
+                {
+                    "tool_name": "list_table_ids",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "dataset_id": "icecream_lab"
+                    }
+                }
+            ],
+            "factual_accuracy_metric/explanation": "The AI's response includes a table (`sales_data_v1`) that is not present in the reference, and it also has a slight mismatch in the name of another table (`fda_ice_cream_enforcements` vs `fda_icecream_enforcements`). The inclusion of an extra, non-existent table is a significant factual error.",
+            "factual_accuracy_metric/score": 1.0,
+            "completeness_metric/explanation": "The AI's answer is critically incomplete. It omits the exact table name `fda_icecream_enforcements` (providing `fda_ice_cream_enforcements` instead) and includes `sales_data_v1`, which is not present in the reference and thus, according to the ground truth, is an unavailable table. Listing an unavailable table is a critical factual error that makes the answer less useful and potentially misleading for the user.",
+            "completeness_metric/score": 1.0,
+            "trajectory_single_tool_use/score": 1.0
+        },
+        {
+            "prompt": "How many icecreams in master data are there in total?",
+            "reference": "There are 12 icecreams in total.",
+            "response": "There are 12 icecreams in total in the master data.",
+            "latency_in_seconds": 14.995738065001206,
+            "failure": 0,
+            "predicted_trajectory": [
+                {
+                    "tool_name": "list_table_ids",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "dataset_id": "icecream_lab"
+                    }
+                },
+                {
+                    "tool_name": "execute_sql",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "query": "SELECT COUNT(*) FROM `vadimzaripov-477-2022062208552.icecream_lab.MaterialMasterData`"
+                    }
+                }
+            ],
+            "factual_accuracy_metric/explanation": "The AI's response accurately states that there are 12 icecreams in total, which perfectly matches the factual information provided in the reference. The additional phrase 'in the master data' is consistent with the prompt and does not introduce any inaccuracy.",
+            "factual_accuracy_metric/score": 5.0,
+            "completeness_metric/explanation": "The AI's response is perfectly complete. It includes the number of icecreams ('12'), the total aspect ('in total'), and explicitly clarifies the context ('in the master data') which was requested by the prompt and implicitly covered by the reference.",
+            "completeness_metric/score": 5.0,
+            "trajectory_single_tool_use/score": 1.0
+        },
+        {
+            "prompt": "Find the description of material icecream 1002.",
+            "reference": "The description of icecream 1002 is `Midnight Velvet Chocolate - Rich, ultra-dark cocoa flavor with a smooth, slightly bitter finish.`.",
+            "response": "The description of material icecream 1002 is: Midnight Velvet Chocolate - Rich, ultra-dark cocoa flavor with a smooth, slightly bitter finish.",
+            "latency_in_seconds": 16.608446479000122,
+            "failure": 0,
+            "predicted_trajectory": [
+                {
+                    "tool_name": "list_table_ids",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "dataset_id": "icecream_lab"
+                    }
+                },
+                {
+                    "tool_name": "get_table_info",
+                    "tool_input": {
+                        "dataset_id": "icecream_lab",
+                        "table_id": "MaterialMasterData",
+                        "project_id": "vadimzaripov-477-2022062208552"
+                    }
+                },
+                {
+                    "tool_name": "execute_sql",
+                    "tool_input": {
+                        "query": "SELECT MaterialDescription FROM `vadimzaripov-477-2022062208552.icecream_lab.MaterialMasterData` WHERE MaterialNumber = 1002",
+                        "project_id": "vadimzaripov-477-2022062208552"
+                    }
+                }
+            ],
+            "factual_accuracy_metric/explanation": "The AI's response perfectly matches the factual information provided in the reference. All details, including the name and description, are identical and entirely accurate.",
+            "factual_accuracy_metric/score": 5.0,
+            "completeness_metric/explanation": "The AI's response perfectly includes all key information requested by the prompt and present in the reference, providing the complete description for 'icecream 1002'.",
+            "completeness_metric/score": 5.0,
+            "trajectory_single_tool_use/score": 1.0
+        },
+        {
+            "prompt": "How many sales lineitems we have?",
+            "reference": "We have 150.000 sales lineitems.",
+            "response": "We have 150000 sales lineitems.",
+            "latency_in_seconds": 15.255778707998616,
+            "failure": 0,
+            "predicted_trajectory": [
+                {
+                    "tool_name": "list_table_ids",
+                    "tool_input": {
+                        "dataset_id": "icecream_lab",
+                        "project_id": "vadimzaripov-477-2022062208552"
+                    }
+                },
+                {
+                    "tool_name": "get_table_info",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "dataset_id": "icecream_lab",
+                        "table_id": "icecream_sales"
+                    }
+                },
+                {
+                    "tool_name": "execute_sql",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "query": "SELECT COUNT(*) FROM `vadimzaripov-477-2022062208552.icecream_lab.icecream_sales`"
+                    }
+                }
+            ],
+            "factual_accuracy_metric/explanation": "The AI's response provides the exact numerical value for sales lineitems as given in the reference. The difference in thousands separator (period vs. none) is a formatting choice and does not alter the factual accuracy.",
+            "factual_accuracy_metric/score": 5.0,
+            "completeness_metric/explanation": "The AI's answer is perfectly complete, providing all key information requested by the prompt and present in the reference. The number of sales lineitems is correctly stated.",
+            "completeness_metric/score": 5.0,
+            "trajectory_single_tool_use/score": 1.0
+        },
+        {
+            "prompt": "Identify the most common reasons for recall for each product type, along with the number of occurrences.",
+            "reference": "The most recalled product type is `Food` and reason is `The recalling firm was notified that raw materials used in producing the ice cream products have the potential to be contaminated with Listeria monocytogenes` and recall count is 85",
+            "response": "The most common reasons for recall for product type 'Food', along with the number of occurrences are:\n\n*   **The recalling firm was notified that raw materials used in producing the ice cream products have the potential to be contaminated with Listeria monocytogenes**: 85 occurrences\n*   **Full Tilt Brand ice cream is being recalled due to the potential to be contaminated with Listeria monocytogenes. These products contain ice cream mix, an ingredient manufactured and recalled by Snoqualmie Gourmet Ice Cream, Inc.**: 17 occurrences\n*   **Undeclared soy lecithin.**: 8 occurrences\n*   **Five patients who were treated in a single hospital in Kansas were infected with one of four rare strains of Listeria monocytogenes.**: 4 occurrences\n*   **FDA environmental sampling found 21 of 50 positive for Listeria monocytogenes, 11 of these on food contact surfaces.**: 4 occurrences\n*   **Product was manufactured using an ingredient that was recalled due to Salmonella contamination.**: 3 occurrences\n*   **Ice cream grab n go Pint containers' labels do not declare any ingredients including allergens Egg, Milk, and Wheat.**: 2 occurrences\n*   **The firm discovered that the label for two of their products did not declare eggs in the ingredient statement.**: 2 occurrences\n*   **Product may be contaminated with Listeria monocytogenes.**: 2 occurrences\n*   **Ice cream grab n go Pint and Cup containers' labels do not declare any ingredients including allergens Egg, Milk, and Wheat.**: 2 occurrences\n*   **The product may contain undeclared walnuts from intermediate layer cake supplier.**: 2 occurrences\n*   **Ice cream grab n go Pint containers' labels do not declare any ingredients including allergens Egg and Milk.**: 2 occurrences\n\nThere are more reasons, but the result is likely truncated.",
+            "latency_in_seconds": 20.780284452999695,
+            "failure": 0,
+            "predicted_trajectory": [
+                {
+                    "tool_name": "list_table_ids",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "dataset_id": "icecream_lab"
+                    }
+                },
+                {
+                    "tool_name": "get_table_info",
+                    "tool_input": {
+                        "dataset_id": "icecream_lab",
+                        "table_id": "fda_ice_cream_enforcements",
+                        "project_id": "vadimzaripov-477-2022062208552"
+                    }
+                },
+                {
+                    "tool_name": "execute_sql",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "query": "SELECT product_type, reason_for_recall, COUNT(*) AS occurrences FROM `vadimzaripov-477-2022062208552.icecream_lab.fda_ice_cream_enforcements` GROUP BY product_type, reason_for_recall ORDER BY product_type, occurrences DESC"
+                    }
+                }
+            ],
+            "factual_accuracy_metric/explanation": "The AI correctly identified the most common reason and its occurrence from the reference. However, the response then lists numerous other reasons and their counts that are not present in the provided reference. As per the strict evaluation criteria, all factual information must be precise and correct when compared to the reference. The additional, unsupported information constitutes significant factual errors relative to the given reference, making the overall response unreliable when judged against the provided ground truth.",
+            "factual_accuracy_metric/score": 1.0,
+            "completeness_metric/explanation": "The AI's response perfectly includes all key information present in the reference: the most recalled product type ('Food'), the specific reason for its recall ('The recalling firm was notified that raw materials used in producing the ice cream products have the potential to be contaminated with Listeria monocytogenes'), and the associated recall count (85). It also provides additional information, which does not detract from its completeness regarding the reference.",
+            "completeness_metric/score": 5.0,
+            "trajectory_single_tool_use/score": 1.0
+        },
+        {
+            "prompt": "Identify customers who consistently give either very high (5) or very low (1) ratings across different products.",
+            "reference": "Customer with consistently low ratings is `Corner Coffee & Cream` and with consistenly high is `University Food Court Services`.",
+            "response": "I am unable to complete this request because the Data Analytics API with Gemini is not enabled in your project 'vadimzaripov-477-2022062208552'. Please enable it by visiting https://console.developers.google.com/apis/api/geminidataanalytics.googleapis.com/overview?project=vadimzaripov-477-2022062208552 and then try again.",
+            "latency_in_seconds": 24.45311928600131,
+            "failure": 0,
+            "predicted_trajectory": [
+                {
+                    "tool_name": "list_dataset_ids",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552"
+                    }
+                },
+                {
+                    "tool_name": "list_table_ids",
+                    "tool_input": {
+                        "dataset_id": "icecream_lab",
+                        "project_id": "vadimzaripov-477-2022062208552"
+                    }
+                },
+                {
+                    "tool_name": "get_table_info",
+                    "tool_input": {
+                        "table_id": "CustomerCases",
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "dataset_id": "icecream_lab"
+                    }
+                },
+                {
+                    "tool_name": "ask_data_insights",
+                    "tool_input": {
+                        "table_references": [
+                            {
+                                "projectId": "vadimzaripov-477-2022062208552",
+                                "datasetId": "icecream_lab",
+                                "tableId": "CustomerCases"
+                            }
+                        ],
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "user_query_with_context": "From the CustomerCases table, identify customers who consistently give either very high (5) or very low (1) ratings across different products. This means for a given customer, all their ratings must be either 5 or 1 across all products they have rated. Also, ensure the customer has rated at least 2 distinct products."
+                    }
+                }
+            ],
+            "factual_accuracy_metric/explanation": "The AI completely failed to answer the question, instead providing an error message about an API not being enabled. It contains no factual information relevant to the prompt, making it entirely incorrect and unreliable as an answer.",
+            "factual_accuracy_metric/score": 1.0,
+            "completeness_metric/explanation": "The AI did not provide any of the requested information from the prompt or reference. Instead, it returned an error message, making it critically incomplete and unusable for the user's purpose.",
+            "completeness_metric/score": 1.0,
+            "trajectory_single_tool_use/score": 1.0
+        },
+        {
+            "prompt": "Find the top 3 products with the most negative feedback (ratings 1 or 2).",
+            "reference": "The top product with negative feedback is `Pistachio River Ripple`.",
+            "response": "The top 3 products with the most negative feedback (ratings 1 or 2) are:\n\n*   **Pistachio River Ripple** with 1 negative feedback.",
+            "latency_in_seconds": 18.925174322999737,
+            "failure": 0,
+            "predicted_trajectory": [
+                {
+                    "tool_name": "list_table_ids",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "dataset_id": "icecream_lab"
+                    }
+                },
+                {
+                    "tool_name": "get_table_info",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "dataset_id": "icecream_lab",
+                        "table_id": "CustomerCases"
+                    }
+                },
+                {
+                    "tool_name": "execute_sql",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "query": "SELECT ProductName, COUNT(*) AS NegativeFeedbackCount FROM `vadimzaripov-477-2022062208552.icecream_lab.CustomerCases` WHERE Rating IN (1, 2) GROUP BY ProductName ORDER BY NegativeFeedbackCount DESC LIMIT 3"
+                    }
+                }
+            ],
+            "factual_accuracy_metric/explanation": "The AI correctly identifies 'Pistachio River Ripple' from the reference, but it fabricates the detail 'with 1 negative feedback' which is not present in the reference. The reference only states the product name, not the count of negative feedback. This fabrication of a numerical detail constitutes a significant factual error.",
+            "factual_accuracy_metric/score": 1.0,
+            "completeness_metric/explanation": "The AI's answer accurately provides the one product mentioned in the reference, which is 'Pistachio River Ripple'. Although the prompt asked for the top 3 products, the reference only listed one, and the AI correctly extracts all relevant information present in the reference.",
+            "completeness_metric/score": 5.0,
+            "trajectory_single_tool_use/score": 1.0
+        },
+        {
+            "prompt": "Find the MaterialNumber with the highest TotalRevenue on a single day.",
+            "reference": "1008",
+            "response": "",
+            "latency_in_seconds": 5.456665415000316,
+            "failure": 0,
+            "predicted_trajectory": [],
+            "factual_accuracy_metric/explanation": "The AI's response is an empty string, which is incorrect as the reference provides the specific MaterialNumber '1008'. The AI failed to answer the question with the correct factual information.",
+            "factual_accuracy_metric/score": 1.0,
+            "completeness_metric/explanation": "The AI response is completely empty, failing to provide the MaterialNumber requested by the prompt and present in the reference. This is a critical omission.",
+            "completeness_metric/score": 1.0,
+            "trajectory_single_tool_use/score": NaN
+        },
+        {
+            "prompt": "Find the material number with the minimum average price per unit.",
+            "reference": "Material 1012 with avg price per unit 14.88",
+            "response": "The material number with the minimum average price per unit is 1012, with an average price of 14.89.",
+            "latency_in_seconds": 21.050945314000273,
+            "failure": 0,
+            "predicted_trajectory": [
+                {
+                    "tool_name": "list_table_ids",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "dataset_id": "icecream_lab"
+                    }
+                },
+                {
+                    "tool_name": "get_table_info",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "dataset_id": "icecream_lab",
+                        "table_id": "MaterialMasterData"
+                    }
+                },
+                {
+                    "tool_name": "get_table_info",
+                    "tool_input": {
+                        "table_id": "icecream_sales",
+                        "dataset_id": "icecream_lab",
+                        "project_id": "vadimzaripov-477-2022062208552"
+                    }
+                },
+                {
+                    "tool_name": "execute_sql",
+                    "tool_input": {
+                        "project_id": "vadimzaripov-477-2022062208552",
+                        "query": "SELECT MaterialNumber, AVG(PricePerUnit) AS AveragePricePerUnit FROM `vadimzaripov-477-2022062208552.icecream_lab.icecream_sales` GROUP BY MaterialNumber ORDER BY AveragePricePerUnit ASC LIMIT 1"
+                    }
+                }
+            ],
+            "factual_accuracy_metric/explanation": "The AI correctly identified the material number (1012) but provided a slightly incorrect average price (14.89 instead of 14.88). This is a minor numerical discrepancy, not a rounding error, but the core information about the material with the minimum price is correct.",
+            "factual_accuracy_metric/score": 3.0,
+            "completeness_metric/explanation": "The AI correctly identifies the material number 1012 as requested. However, there is a slight inaccuracy in the average price, stating 14.89 instead of the reference's 14.88. This is a minor, non-critical discrepancy that does not impact the core utility of the answer, hence a 'Good' score.",
+            "completeness_metric/score": 3.0,
+            "trajectory_single_tool_use/score": 1.0
+        }
+    ]
+}

@@ -1,0 +1,38 @@
+[
+   {
+       "prompt": "What tables are available in the dataset `icecream_lab`?",
+       "reference": "The tables available in the dataset `icecream_lab` are: `CustomerCases, `MaterialMasterData`, `actuals_vs_forecast`, `fda_icecream_enforcements`, `icecream_sales`."
+   },
+   {
+       "prompt": "How many icecreams in master data are there in total?",
+       "reference": "There are 12 icecreams in total."
+   },
+   {
+       "prompt": "Find the description of material icecream 1002.",
+       "reference": "The description of icecream 1002 is `Midnight Velvet Chocolate - Rich, ultra-dark cocoa flavor with a smooth, slightly bitter finish.`."
+   },
+   {
+       "prompt": "How many sales lineitems we have?",
+       "reference": "We have 150.000 sales lineitems."
+   },
+   {
+       "prompt": "Identify the most common reasons for recall for each product type, along with the number of occurrences.",
+       "reference": "The most recalled product type is `Food` and reason is `The recalling firm was notified that raw materials used in producing the ice cream products have the potential to be contaminated with Listeria monocytogenes` and recall count is 85"
+   },
+   {
+       "prompt": "Identify customers who consistently give either very high (5) or very low (1) ratings across different products.",
+       "reference": "Customer with consistently low ratings is `Corner Coffee & Cream` and with consistenly high is `University Food Court Services`."
+   },
+   {
+       "prompt": "Find the top 3 products with the most negative feedback (ratings 1 or 2).",
+       "reference": "The top product with negative feedback is `Pistachio River Ripple`."
+   },
+   {
+       "prompt": "Find the MaterialNumber with the highest TotalRevenue on a single day.",
+       "reference": "1008"
+   },
+   {
+       "prompt": "Find the material number with the minimum average price per unit.",
+       "reference": "Material 1012 with avg price per unit 14.88"
+   }
+]
