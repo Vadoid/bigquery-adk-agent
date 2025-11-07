@@ -20,9 +20,22 @@ echo ""
 echo "Press Ctrl+C to stop the server"
 echo ""
 
-# Open the browser with the app parameter after a short delay (in background)
-(
-    sleep 3
+# Function to check if server is ready
+wait_for_server() {
+    local max_attempts=30
+    local attempt=0
+    while [ $attempt -lt $max_attempts ]; do
+        if curl -s -o /dev/null -w "%{http_code}" "http://localhost:$PORT" | grep -q "200\|404\|302"; then
+            return 0
+        fi
+        sleep 1
+        attempt=$((attempt + 1))
+    done
+    return 1
+}
+
+# Function to open browser
+open_browser() {
     if command -v open >/dev/null 2>&1; then
         # macOS
         open "$URL"
@@ -36,8 +49,22 @@ echo ""
         echo ""
         echo "Please open your browser and navigate to: $URL"
     fi
-) &
+}
 
-# Start adk web in the foreground (this will block until Ctrl+C)
-adk web --port "$PORT"
+# Start adk web in the background
+adk web --port "$PORT" &
+ADK_PID=$!
+
+# Wait for server to be ready
+echo "Waiting for server to start..."
+if wait_for_server; then
+    echo "✅ Server is ready!"
+    open_browser
+else
+    echo "⚠️  Server may not be ready, but opening browser anyway..."
+    open_browser
+fi
+
+# Wait for the ADK process (this will block until Ctrl+C)
+wait $ADK_PID
 
