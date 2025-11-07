@@ -82,13 +82,15 @@ ADK_PID=$!
 
 # Wait for server to be ready
 if wait_for_server; then
-    echo "✅ Server is ready! Opening browser..."
-    sleep 1  # Small additional delay to ensure everything is fully initialized
+    echo "✅ Server is ready! Waiting a bit longer for full initialization..."
+    sleep 5  # Additional delay to ensure uvicorn and all services are fully ready
+    echo "Opening browser..."
     open_browser
 else
     echo ""
     echo "⚠️  Server didn't respond within timeout, but opening browser anyway..."
     echo "   If the page doesn't load, wait a few more seconds and refresh."
+    sleep 3  # Even if check failed, wait a bit before opening
     open_browser
 fi
 
