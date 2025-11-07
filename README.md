@@ -41,6 +41,7 @@ bigquery-adk-agent/
 ├── utils.py                  # Utility functions for agent invocation and evaluation
 ├── evaluate_agent.py         # Evaluation framework with custom metrics
 ├── evaluation_dataset.json   # Test dataset for agent evaluation
+├── start_web.sh              # Helper script to start web UI with default app
 ├── requirements.txt          # Python dependencies
 └── .env                       # Environment variables (create from template)
 ```
@@ -127,10 +128,6 @@ pip install -r requirements.txt
 
 ## Configuration
 
-The `gcloud auth application-default login` command sets up Application Default Credentials (ADC) that the agent will use automatically. This is the recommended method for local development.
-
-**Note:** Make sure to run gcloud authentication commands before activating your virtual environment, as gcloud can have conflicts with packages installed in virtual environments.
-
 ### Agent Configuration
 
 The agent is configured dynamically from environment variables:
@@ -163,17 +160,34 @@ root_agent = Agent(
 
 Run the agent using the ADK web interface from the project root directory:
 
+**Option 1: Use the helper script (recommended - opens browser automatically):**
+```bash
+chmod +x start_web.sh
+./start_web.sh
+# Or specify a custom port:
+./start_web.sh 8080
+```
+
+The helper script automatically opens your browser to `http://localhost:8000/dev-ui/?app=bigquery_agent_app` with the app pre-selected.
+
+**Option 2: Use adk web directly:**
 ```bash
 adk web --port 8000
 ```
 
-This starts a web server with a chat interface for your agent. Access it at [http://localhost:8000](http://localhost:8000). Select the agent from the dropdown in the upper right corner and start chatting.
+Then manually open your browser to:
+- **Direct link with app selected**: [http://localhost:8000/dev-ui/?app=bigquery_agent_app](http://localhost:8000/dev-ui/?app=bigquery_agent_app)
+- **Or manually select**: [http://localhost:8000](http://localhost:8000) and choose `bigquery_agent_app` from the dropdown
 
-**Note:** Run this command from the **root directory** that contains the `bigquery_agent_app/` folder. For more details on running ADK agents, see the [ADK documentation](https://google.github.io/adk-docs/get-started/python/#run-your-agent).
+**Note:** 
+- Run commands from the **root directory** that contains the `bigquery_agent_app/` folder
+- The helper script (`start_web.sh`) automatically opens the browser with the `?app=bigquery_agent_app` parameter, so you don't need to manually select the app
+- You can bookmark `http://localhost:8000/dev-ui/?app=bigquery_agent_app` for quick access
+- For more details on running ADK agents, see the [ADK documentation](https://google.github.io/adk-docs/get-started/python/#run-your-agent)
 
 #### Command-Line Interface
 
-Alternatively, run the agent using the ADK CLI:
+Alternatively, run the agent using the ADK CLI:./start_web.sh
 
 ```bash
 adk run bigquery_agent_app
