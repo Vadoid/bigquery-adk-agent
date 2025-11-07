@@ -1,3 +1,5 @@
 /.adkvenv
 /__pycache__
 /eval_results
+/.env
+/bigquery_agent_app/__pycache__/
