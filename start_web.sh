@@ -22,15 +22,40 @@ echo ""
 
 # Function to check if server is ready
 wait_for_server() {
-    local max_attempts=30
+    local max_attempts=60  # Wait up to 60 seconds
     local attempt=0
+    echo -n "Waiting for server"
     while [ $attempt -lt $max_attempts ]; do
-        if curl -s -o /dev/null -w "%{http_code}" "http://localhost:$PORT" | grep -q "200\|404\|302"; then
-            return 0
+        # Check if the port is listening first (faster check)
+        if command -v lsof >/dev/null 2>&1; then
+            # macOS/Linux: check if port is in use
+            if lsof -Pi :$PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
+                # Port is listening, now check if HTTP endpoint responds
+                if curl -s -f -o /dev/null --max-time 2 "http://localhost:$PORT/dev-ui/" 2>/dev/null; then
+                    echo ""  # New line after dots
+                    return 0
+                fi
+            fi
+        elif command -v netstat >/dev/null 2>&1; then
+            # Alternative: check if port is listening (Linux)
+            if netstat -an 2>/dev/null | grep -q ":$PORT.*LISTEN"; then
+                if curl -s -f -o /dev/null --max-time 2 "http://localhost:$PORT/dev-ui/" 2>/dev/null; then
+                    echo ""  # New line after dots
+                    return 0
+                fi
+            fi
+        else
+            # Fallback: just check HTTP response
+            if curl -s -f -o /dev/null --max-time 2 "http://localhost:$PORT/dev-ui/" 2>/dev/null; then
+                echo ""  # New line after dots
+                return 0
+            fi
         fi
+        echo -n "."
         sleep 1
         attempt=$((attempt + 1))
     done
+    echo ""  # New line after dots
     return 1
 }
 
@@ -56,12 +81,14 @@ adk web --port "$PORT" &
 ADK_PID=$!
 
 # Wait for server to be ready
-echo "Waiting for server to start..."
 if wait_for_server; then
-    echo "✅ Server is ready!"
+    echo "✅ Server is ready! Opening browser..."
+    sleep 1  # Small additional delay to ensure everything is fully initialized
     open_browser
 else
-    echo "⚠️  Server may not be ready, but opening browser anyway..."
+    echo ""
+    echo "⚠️  Server didn't respond within timeout, but opening browser anyway..."
+    echo "   If the page doesn't load, wait a few more seconds and refresh."
     open_browser
 fi
 
